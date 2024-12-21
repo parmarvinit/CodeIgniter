@@ -29,6 +29,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>No.</th>
                     <th>Employee ID</th>
                     <th>Employee Name</th>
                     <th>Address</th>
@@ -52,9 +53,9 @@
                 </div>
                 <div class="modal-body">
                     <form id="myform" action="" method="post">
-                        <label for="empid">Employee ID:</label>
+                        <!-- <label for="empid">Employee ID:</label>
                         <input type="text" class="form-control" id="empid" name="empid" placeholder="Enter Employee ID">
-                        <br>
+                        <br> -->
                         <label for="empname">Employee Name:</label>
                         <input type="text" class="form-control" id="empname" name="empname"
                             placeholder="Enter Employee Name">
@@ -121,12 +122,12 @@
                 var isValid = true;
 
                 // Validation
-                if (empid.val().trim() === '') {
-                    empid.addClass('is-invalid');
-                    isValid = false;
-                } else {
-                    empid.removeClass('is-invalid');
-                }
+                // if (empid.val().trim() === '') {
+                //     empid.addClass('is-invalid');
+                //     isValid = false;
+                // } else {
+                //     empid.removeClass('is-invalid');
+                // }
 
                 if (empName.val().trim() === '') {
                     empName.addClass('is-invalid');
@@ -188,6 +189,7 @@
                     for (i = 0; i < data.length; i++) {
                         html +=
                             '<tr>' +
+                            '<td>' + (i+1) + '</td>' +
                             '<td>' + data[i].employe_id + '</td>' +
                             '<td>' + data[i].employe_name + '</td>' +
                             '<td>' + data[i].employe_address + '</td>' +

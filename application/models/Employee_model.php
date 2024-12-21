@@ -18,7 +18,7 @@ class Employee_model extends CI_Model
     public function addEmployee()
     {
         $emp_data = array(
-            'employe_id' => htmlspecialchars($this->input->post('empid')),
+            // 'employe_id' => htmlspecialchars($this->input->post('empid')),
             'employe_name' => htmlspecialchars($this->input->post('empname')),
             'employe_address' => htmlspecialchars($this->input->post('address')),
             'employe_phoneno' => htmlspecialchars($this->input->post('phone'))
@@ -60,6 +60,7 @@ class Employee_model extends CI_Model
             return false;
         }
         
+
     }
 
     public function deleteEmploye($id)
