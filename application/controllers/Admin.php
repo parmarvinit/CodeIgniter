@@ -7,6 +7,7 @@ class Admin extends MY_Controller
     public function __construct()
     {
         parent::__construct();
+        
     }
     
     public function login()
@@ -30,12 +31,16 @@ class Admin extends MY_Controller
                 //echo "Data Matched";
 
                 $this->session->set_userdata('loginId', $login_id);
+                $this->session->set_userdata('uname', $uname);
 
                 ///$this->load->view('admin/dashboard');
                 return redirect('admin/welcome');
             } else {
-                echo "Data Not Matched";
+                $this->session->set_flashdata('login_failed', 'Invalid Username/Password');
+                redirect('admin/login');
+                
             }
+            
         } else {
             $this->load->view('admin/login');
         }
@@ -103,6 +108,20 @@ class Admin extends MY_Controller
         }
         
 
+    }
+
+
+    public function adduser()
+    {
+        $this->load->view('admin/add_articles');
+        // $this->input()->post();
+    }
+    public function userValidation(){
+        if($this->form_validation->run('add_article_rules')){
+            echo 'ok';
+        }else{
+            $this->load->view('admin/add_articles');
+        }
     }
 }
 ?>

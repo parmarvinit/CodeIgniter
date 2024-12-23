@@ -1,11 +1,14 @@
 
 <?php include("header.php"); ?>
-<?php //echo print_r("articles"); ?>
 
 <div class="container" style="margin-top:50px;">
-    
-        <div class="table">
-            <table>
+    <div class="row">
+        <!-- <a href="adduser" class="btn btn-lg btn-primary">Add Articles</a> -->
+        <?= anchor('admin/adduser','Add Articles',['class'=>'btn btn-lg btn-primary']); ?>
+    </div>
+</div>
+<div class="container" style="margin-top:50px;">
+            <table class="table table-bordered ">
                 <thead>
                     <tr>
                         <th>id</th>
@@ -31,10 +34,8 @@
                     <?php endif; ?>
                 </tbody>
             </table>
-        </div>
+        
 </div>
-<form action="logout" method="post">
-        <button type="submit">Logout</button>
-    </form>
+
 
 <?php include('footer.php'); ?>
