@@ -2,16 +2,16 @@
 
 
 <div class="container" style="margin-top:20px">
-    <h1>Add Articles</h1>
-    <?php echo form_open('Admin/userValidation') ?>
-    <?php echo form_hidden('user_id', $this->session->userdata('loginId')); ?>
+    <h1>Edit Articles</h1>
+    <?php echo form_open('Admin/updatearticle') ?>
+    <?php echo form_hidden('id', $article->id); ?>
 
     <div class="row">
         <div class="col-lg-6">
             <div class="form-group" style="margin-top:20px">
                 <label for="article_title">Article Title</label>
-
-                <?php echo form_input(['class' => 'form-control', 'placeholder' => 'Enter Article Title', 'name' => 'article_title', 'value' => set_value('article_title')]); ?>
+                
+                <?php echo form_input(['class' => 'form-control', 'placeholder' => 'Enter Article Title', 'name' => 'article_title', 'value' => set_value('article_title',$article->article_title)]); ?>
             </div>
         </div>
         <div class="col lg-6 text-danger" style="margin-top:40px;"><?php echo form_error('article_title'); ?></div>
@@ -21,7 +21,7 @@
             <div class="form-group" style="margin-top:10px">
                 <label for="article_body">Article Body</label>
 
-                <?php echo form_textarea(['class' => 'form-control', 'type' => 'textarea', 'placeholder' => 'Write Something New ...', 'name' => 'article_body']); ?>
+                <?php echo form_textarea(['class' => 'form-control', 'type' => 'textarea', 'placeholder' => 'Write Something New ...', 'name' => 'article_body','value' => set_value('article_body',$article->article_body)]); ?>
             </div>
         </div>
         <div class="col lg-6  text-danger" style="margin-top:40px;"><?php echo form_error('article_body'); ?></div>

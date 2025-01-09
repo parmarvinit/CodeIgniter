@@ -52,8 +52,27 @@ class Admin extends MY_Controller
             return redirect('admin/login');
         }
         $this->load->model("loginmodel", "lg");
+        $this->load->library('pagination');
+        $config = [
+            'base_url' => base_url('admin/welcome'),
+            'per_page' => 3 ,
+            'total_rows' => $this->lg->total_rows(),
+            'full_tag_open' => "<ul class='pagination justify-content-center'>",
+            'full_tag_close' => "</ul>",
+            'next_tag_open' => "<li class='page-item'>",
+            'next_tag_close' => "</li>",
+            'prev_tag_open' => "<li class='page-item'>",
+            'prev_tag_close' => "</li>",
+            'num_tag_open' => "<li class='page-item'>",
+            'num_tag_close' => "</li>",
+            'cur_tag_open' => "<li class='page-item active'><a >",
+            'cur_tag_close' => "</a></li>"
+        ];
+        $this->pagination->initialize($config);
+        
 
-        $articles = $this->lg->articleList();
+
+        $articles = $this->lg->articleList($config['per_page'],$this->uri->segment(3));
         $this->load->view('admin/dashboard', ['articles' => $articles]);
 
 
@@ -68,33 +87,48 @@ class Admin extends MY_Controller
         $this->load->library('form_validation');
 
         // Set validation rules for form fields
-        $this->form_validation->set_rules('fname', 'First Name', 'required|alpha');
-        $this->form_validation->set_rules('lname', 'Last Name', 'required|alpha');
-        $this->form_validation->set_rules('uname', 'User Name', 'required|alpha');
+        $this->form_validation->set_rules('firstname', 'First Name', 'required|alpha');
+        $this->form_validation->set_rules('lastname', 'Last Name', 'required|alpha');
+        $this->form_validation->set_rules('username', 'User Name', 'required|alpha');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[users.email]');
-        $this->form_validation->set_rules('pass', 'Password', 'required|min_length[6]|max_length[10]');
+        $this->form_validation->set_rules('password', 'Password', 'required|min_length[6]|max_length[10]');
         $this->form_validation->set_error_delimiters("<div class='text-danger'>", "</div>");
 
         if ($this->form_validation->run()) {
 
-            $this->load->library('email');
-            $this->email->from(set_value('email'), set_value('fname'));
+            $this->load->model('loginmodel','user_add');
+            $user = $this->input->post();
+           
+            if($this->user_add->add_user($user)){
+                $this->session->set_flashdata('user','User Added Successfully');
+                $this->session->set_flashdata('user_class','alert-success');
+                return redirect('Admin/register');
 
-            $this->email->to(set_value('parmarvinit1129'));
-            $this->email->subject('Registration Successfull');
-            $this->email->message('Thank You');
-            $this->email->send();
-
-            if (!$this->email->send()) {
-                show_error($this->email->print_debugger());
-            } else {
-                echo "mail send";
+            }else{
+                $this->session->set_flashdata('user','Opps... User Not Added!');
+                $this->session->set_flashdata('user_class','alert-danger');
+                return redirect('Admin/register');
             }
 
+            // $this->load->library('email');
+            // $this->email->from(set_value('email'), set_value('fname'));
 
+            // $this->email->to(set_value('parmarvinit1129'));
+            // $this->email->subject('Registration Successfull');
+            // $this->email->message('Thank You');
+            // $this->email->send();
+
+            // if (!$this->email->send()) {
+            //     show_error($this->email->print_debugger());
+            // } else {
+            //     echo "mail send";
+            // }
+
+           
+        }else {
+            $this->load->view('admin/register');
         }
-      
-        $this->load->view('admin/register');
+        
 
 
     }
@@ -111,17 +145,67 @@ class Admin extends MY_Controller
     }
 
 
-    public function adduser()
+    public function add_articles()
     {
         $this->load->view('admin/add_articles');
         // $this->input()->post();
     }
     public function userValidation(){
         if($this->form_validation->run('add_article_rules')){
-            echo 'ok';
+            $post = $this->input->post();
+            $this->load->model('loginmodel','lg');
+            if($this->lg->add_articles($post)){
+                $this->session->set_flashdata('msg','Article Added Successfully');
+                $this->session->set_flashdata('msg_class','alert-success');
+            }
+            else{
+                $this->session->set_flashdata('msg','Failed to Add Article');
+                $this->session->set_flashdata('msg_class','alert-danger');
+
+            } 
+            return redirect('Admin/Welcome');  
         }else{
-            $this->load->view('admin/add_articles');
+            $this->load->view('Admin/add_articles');
         }
     }
+
+    public function delete_article(){
+        $this->load->model('loginmodel','lg');
+        $id = $this->input->post('id');
+        if($this->lg->delete_article($id)){
+            $this->session->set_flashdata('msg','Article Deleted Successfully');
+            $this->session->set_flashdata('msg_class','alert-success');
+    }else{
+        $this->session->set_flashdata('msg','Failed to Delete Article');
+        $this->session->set_flashdata('msg_class','alert-danger');
+
+    }
+    return redirect('admin/welcome');
+    }
+
+    public function edit_article(){
+        $this->load->model('loginmodel','lg');
+        $id = $this->input->post('id');
+        $article = $this->lg->get_article($id);
+        // print_r($article);exit;
+        $this->load->view('admin/edit_article', ['article' => $article]);
+    }
+
+    public function updatearticle(){
+        $this->load->model('loginmodel','lg');
+        $id = $this->input->post('id');
+        $post = $this->input->post();
+        // print_r($post);exit;
+        if($this->lg->update_article($id,$post)){
+            $this->session->set_flashdata('msg','Article Updated Successfully');
+            $this->session->set_flashdata('msg_class','alert-success');
+        }else{
+            $this->session->set_flashdata('msg','Failed to Update Article');
+            $this->session->set_flashdata('msg_class','alert-danger');
+        }
+        return redirect('admin/welcome');
+    }
+
+    
 }
 ?>

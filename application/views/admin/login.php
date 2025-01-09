@@ -31,13 +31,23 @@
                 <?php echo form_password(['class' => 'form-control', 'type' => 'password', 'placeholder' => 'Enter Password', 'name' => 'pass']); ?>
             </div>
         </div>
-        <div class="col lg-6" style="margin-top:40px;"><?php echo form_error('pass'); ?></div>
+        <div class="col-lg-6" style="margin-top:40px;"><?php echo form_error('pass'); ?></div>
     </div>
-    <!-- <button type="submit" class="btn-default" style="margin-top:10px">Submit</button> -->
-    <?php echo form_submit(['type' => 'submit', 'class' => 'btn-default', 'value' => 'submit', 'style' => "margin-top:10px"]); ?>
-    <?php echo form_reset(['type' => 'reset', 'class' => 'btn-default', 'value' => 'Reset', 'style' => "margin:10px"]); ?>
-    <?php echo anchor('admin/register/', "Sign Up?", 'class="link-class"'); ?>
+    <div class="row">
+        <div class="col-lg-2">
+            <?php echo form_submit(['type' => 'submit', 'class' => 'btn btn-success w-100 fw-bold', 'value' => 'Submit', 'style' => "margin-top:10px"]); ?>
+        </div>
+        <div class="col-lg-2">
+            <?php echo form_reset(['type' => 'reset', 'class' => 'btn btn-danger w-100 fw-bold', 'value' => 'Reset', 'style' => "margin-top:10px"]); ?>
+        </div>
+        <div class="col-lg-2">
+            <?php echo anchor('admin/register/', "Sign Up", 'class="btn btn-primary link-class mt-2 w-100 fw-bold"'); ?>
+        </div>
+
+    </div>
+
 </div>
+
 
 <?php //echo validation_errors(); ?>
 <?php include('footer.php') ?>
